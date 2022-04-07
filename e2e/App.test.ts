@@ -1,4 +1,4 @@
-import { test } from './baseFixtures';
+import {test} from '@bgotink/playwright-coverage';
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/")
