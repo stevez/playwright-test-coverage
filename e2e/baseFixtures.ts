@@ -14,7 +14,7 @@ export const test = baseTest.extend({
     await fs.promises.mkdir(c8CLIOutput, { recursive: true });
 
     await page.coverage.startJSCoverage({
-      resetOnNavigation: true,
+      resetOnNavigation: false,
     });
 
     await use(page);
