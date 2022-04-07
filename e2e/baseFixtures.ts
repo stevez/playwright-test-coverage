@@ -1,32 +1,36 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as crypto from 'crypto';
-import { test as baseTest } from '@playwright/test';
+import { test as baseTest } from '@playwright/test'
 
-const istanbulCLIOutput = path.join(process.cwd(), '.nyc_output');
-
+const c8CLIOutput = path.join(process.cwd(), 'coverage/tmp');
 export function generateUUID(): string {
   return crypto.randomBytes(16).toString('hex');
 }
 
 export const test = baseTest.extend({
-  context: async ({ context }, use) => {
-    await context.addInitScript(() =>
-      window.addEventListener('beforeunload', () =>
-        (window as any).collectIstanbulCoverage(JSON.stringify((window as any).__coverage__))
-      ),
-    );
-    await fs.promises.mkdir(istanbulCLIOutput, { recursive: true });
-    await context.exposeFunction('collectIstanbulCoverage', (coverageJSON: string) => {
-      if (coverageJSON)
-        fs.writeFileSync(path.join(istanbulCLIOutput, `playwright_coverage_${generateUUID()}.json`), coverageJSON);
+  page: async ({page, baseURL}, use) => {
+
+    await fs.promises.mkdir(c8CLIOutput, { recursive: true });
+
+    await page.coverage.startJSCoverage({
+      resetOnNavigation: true,
     });
-    await use(context);
-    for (const page of context.pages()) {
-      await page.evaluate(() => (window as any).collectIstanbulCoverage(JSON.stringify((window as any).__coverage__)))
-      await page.close();
-    }
-  }
+
+    await use(page);
+
+    const coverage = await page.coverage.stopJSCoverage();
+    const result =  coverage.map( entry => {
+      return { 
+        ...entry,
+        url: entry.url.replace(baseURL, process.cwd())
+      }
+    })
+    
+
+    fs.writeFileSync(path.join(c8CLIOutput, `playwright_v8_coverage_${generateUUID()}.json`), JSON.stringify({result}));
+
+  },
 });
 
 export const expect = test.expect;
