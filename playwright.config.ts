@@ -23,12 +23,12 @@ const config: PlaywrightTestConfig = {
       '@bgotink/playwright-coverage',
       /** @type {import('@bgotink/playwright-coverage').CoverageReporterOptions} */ {
         // Path to the root files should be resolved from, most likely your repository root
-        sourceRoot: __dirname,
+        sourceRoot: "src",
         // Files to ignore in coverage, useful
         // - if you're testing the demo app of a component library and want to exclude the demo sources
         // - or part of the code is generated
         // - or if you're running into any of the other many reasons people have for excluding files
-        exclude: [],
+        exclude: ['*.css', "*.svg"],
         // Directory in which to write coverage reports
         resultDir: path.join(__dirname, 'coverage'),
         // Configure the reports to generate.
@@ -44,6 +44,7 @@ const config: PlaywrightTestConfig = {
               file: 'coverage.lcov',
             },
           ],
+          ["text"],
           // Log a coverage summary at the end of the test run
           [
             'text-summary',
