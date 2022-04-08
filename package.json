@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "test": "npx playwright test",
     "eject": "react-scripts eject"
   },
@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@bgotink/playwright-coverage": "^0.1.3",
-    "vite": "^2.9.1"
+    "vite": "^2.9.1",
+    "@vitejs/plugin-react": "^1.3.0"
   }
 }
