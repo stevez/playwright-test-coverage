@@ -21,7 +21,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "test": "npx playwright test",
+    "test": "npx playwright test e2e",
     "eject": "react-scripts eject",
     "coverage-report": "c8 report"
   },
