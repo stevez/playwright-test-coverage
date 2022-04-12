@@ -40,6 +40,6 @@
     ]
   },
   "devDependencies": {
-    "vite-plugin-istanbul": "^2.5.1"
+    "vite-plugin-istanbul": "2.7.0"
   }
 }
